@@ -1,0 +1,55 @@
+module.exports =
+
+  announcer: 28
+
+  descriptions:
+    vikt:
+      title: 'vikt'
+      unit: 'kg'
+      factor: 1000 / 449
+      scale: 2
+      min:-5000
+      max: 5000
+    temp:
+      title: 'temp'
+      unit: 'C'
+      scale: 1
+      min: 0
+      max: 1000
+    humidity:
+      title: 'humidity'
+      unit: '%'
+      scale: 1
+      min: 0
+      max: 1000
+    batt1:
+      title: 'batt1'
+      unit: 'V'
+      factor: 340 / 255
+      scale: 2
+      min: 0
+      max: 50
+    batt2:
+      title: 'batt2'
+      unit: 'V'
+      factor: 340 / 255
+      scale: 2
+      min: 0
+      max: 50
+
+  feed: 'rf12.packet'
+
+  decode: (raw, cb) ->
+    m = raw.readUInt32LE(1, true)
+    zero = 1732
+    cb
+      vikt: if m < 2147483648 then m + zero else m - 4294967295 + zero
+      temp: raw.readUInt16LE(5, true)
+      humidity: raw.readUInt16LE(7, true)
+      batt1: raw[9]
+      batt2: raw[10]
+    
+
+
+
+      
